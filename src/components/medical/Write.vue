@@ -6,13 +6,13 @@
                 <b-col md="6" offset-md="3">
                     <b-card>
                     <label for="datepicker">날짜</label>
-                    <b-form-datepicker id="datepicker" v-model="data.date"></b-form-datepicker>
+                    <b-form-datepicker id="datepicker" :hide-header="true"></b-form-datepicker>
                     <br>
                     <label for="cause">내원이유</label>
                     <b-form-input
                         id="cause"
                         v-model="data.cause"
-                        placeholder="갈색구토, 기침, 먹으면 안되는걸 먹음 등"
+                        placeholder="갈색구토, 기침, 초콜릿 먹음 등"
                         required
                     ></b-form-input>
                     <br>
@@ -61,7 +61,11 @@ export default {
                     petname: '콩이',
                     master: '박상현'
                 },
+            hideHeader: Boolean(1)
         }
+    },
+    methods: {
+
     }
 }
 </script>
