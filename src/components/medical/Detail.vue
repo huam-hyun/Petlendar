@@ -5,22 +5,22 @@
                 <b-col md="6" offset-md="3">
                     <b-card>
                         <label>날짜</label>
-                        <p>{{data.date}}</p>
+                        <p>{{MedicalData.date}}</p>
                         <br>
                         <label>내원이유</label>
-                        <p>{{data.cause}}</p>
+                        <p>{{MedicalData.cause}}</p>
                         <br>
                         <label>내용</label>
-                        <p>{{data.text}}</p>
+                        <p>{{MedicalData.text}}</p>
                         <br>
                         <label>처방</label>
-                        <p>{{data.prescription}}</p>
+                        <p>{{MedicalData.prescription}}</p>
                         <br>
                         <label>비용</label>
-                        <p>{{data.cost}}</p>
+                        <p>{{MedicalData.cost}}</p>
                     </b-card>
                     <br>
-                    <b-button @click="goWrite">수정하기</b-button><b-button @click="goBack">뒤로가기</b-button>
+                    <b-button @click="goWrite(MedicalData.no)">수정하기</b-button><b-button @click="goBack">뒤로가기</b-button>
                 </b-col>
             </b-form-row>
         </b-container>
@@ -28,24 +28,17 @@
 </template>
 
 <script>
+import PetData from '@/data/PetData';
+
 export default {
     data(){
         return{
             data1: this.$route.params.no,   //가져온 MedicalList no
-            data: {     //가져온 데이터가 이것이라고 가정       select * from MedicalList where no=1
-                    no: '1',
-                    date: '2021-09-24',
-                    cause: '구토',
-                    text: '23일 저녁부터 갈색 구토를 함',
-                    prescription: '계속 지켜볼 것',
-                    cost: '5000',
-                    petname: '콩이',
-                    master: '박상현'
-                },
+            MedicalData: PetData[this.$route.params.no-1]
         }
     },
     methods:{
-        goBack(){ //뒤로가기
+        goBack(){       //뒤로가기
             this.$router.go(-1)
         },
         goWrite(num){   //수정하기

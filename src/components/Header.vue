@@ -34,7 +34,7 @@ export default {
             this.$router.push('/').catch(()=>{})
         },
         goCalendar(){
-            this.$router.push('/Calendar/List')
+            this.$router.push('/Calendar/View')
         },
         goMedical(){
             this.$router.push('/Medical/List')

@@ -24,40 +24,25 @@
                 </b-col>
             </b-row>
         </b-container>
+        <b-button @click="goWrite">작성하기</b-button>
     </div>
 </template>
 
 <script>
+import Data from '@/data/PetData'
+
 export default {
     data(){
         return{
-            List: [ //나중에 DB로 교체할 것
-                {
-                    no: '1',
-                    date: '2021-09-24',
-                    cause: '구토',
-                    text: '23일 저녁부터 갈색 구토를 함',
-                    prescription: '계속 지켜볼 것',
-                    cost: '5000',
-                    petname: '콩이',
-                    master: '박상현'
-                },
-                {
-                    no: '2',
-                    date: '2021-09-29',
-                    cause: '설사',
-                    text: '3일동안 설사했음',
-                    prescription: '약 처방',
-                    cost: '20000',
-                    petname: '콩이',
-                    master: '박상현'
-                },
-            ]
+            List: Data
         }
     },
     methods:{
         onClick(num){
             this.$router.push({name:'MedicalDetail', params:{no: num}})
+        },
+        goWrite(){
+            this.$router.push({name:'MedicalWrite'})
         }
     }
 }

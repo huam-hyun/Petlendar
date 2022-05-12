@@ -2,21 +2,21 @@
     <div>   
         <b-container fluid>
             <b-row>
-                <h1>Calender View</h1>     
-            </b-row>
-            <b-row>
                 <b-col cols="4">
-                    <b-calendar width="320px" v-model="date" @context="onContext" hide-header='true'></b-calendar>
+                    <b-calendar width="320px" v-model="date" @context="onContext" :hide-header="true"></b-calendar>
                 </b-col>
                 <b-col>
                     <b-card>
+                        <b-card-header>
+                            {{date}}
+                        </b-card-header>
                         특이사항 나타낼 부분
 
                     </b-card>
                 </b-col>
             </b-row>
         </b-container>
-        <b-button @click="List">리스트보기</b-button>
+        <b-button>리스트보기</b-button>
     </div>
 </template>
 
@@ -28,9 +28,9 @@ export default {
         }
     },
     methods: {
-        // onContext(ctx){
-        //     this.context = ctx    
-        // }
+         onContext(ctx){
+             this.context = ctx    
+         }
     }
 }
 </script>

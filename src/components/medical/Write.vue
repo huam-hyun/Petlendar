@@ -6,13 +6,13 @@
                 <b-col md="6" offset-md="3">
                     <b-card>
                     <label for="datepicker">날짜</label>
-                    <b-form-datepicker id="datepicker" :hide-header="true"></b-form-datepicker>
+                    <b-form-datepicker v-model="data.date" id="datepicker" placeholder="날짜를 선택하세요"></b-form-datepicker>
                     <br>
                     <label for="cause">내원이유</label>
                     <b-form-input
                         id="cause"
                         v-model="data.cause"
-                        placeholder="갈색구토, 기침, 초콜릿 먹음 등"
+                        placeholder="구토, 기침, 초콜릿 먹음 등"
                         required
                     ></b-form-input>
                     <br>
@@ -39,7 +39,7 @@
                         ></b-form-input>
                     </b-input-group>
                     </b-card>
-                    <b-button>작성하기</b-button>
+                    <b-button @click="goList()">작성하기</b-button>
                 </b-col>
             </b-form-row>
         </b-container>
@@ -47,25 +47,34 @@
 </template>
 
 <script>
+import PetData from '@/data/PetData'
+
 export default {
     data(){
         return{
-            data1: this.$route.params.no,   //수정할 MedicalList no
-            data: {     //가져온 데이터를 여기다 저장한다 없으면 null값들이 저장돼있을 것       select * from MedicalList where no=1
-                    no: '1',
-                    date: '2021-09-24',
-                    cause: '구토',
-                    text: '23일 저녁부터 갈색 구토를 함',
-                    prescription: '계속 지켜볼 것',
-                    cost: '5000',
-                    petname: '콩이',
-                    master: '박상현'
-                },
-            hideHeader: Boolean(1)
+            data: this.$route.params.no ? PetData[this.$route.params.no-1] : {
+                no: '',
+                date: '',
+                cause: '',
+                text: '',
+                prescription: '',
+                cost: '',
+                petname: '',
+                master: ''
+            },   //수정할 MedicalList no
         }
     },
     methods: {
-
+        goList(){
+            if(this.$route.params.no){
+                this.$router.push({name: 'MedicalList'})
+            }else{
+                this.data.no = PetData.length + 1
+                PetData.push(this.data)
+                this.$router.push({name: 'MedicalList'})
+            }
+            
+        }
     }
 }
 </script>
