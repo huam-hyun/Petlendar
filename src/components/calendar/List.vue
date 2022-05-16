@@ -8,16 +8,27 @@
             </b-row>
             <b-row>
                 <b-col>
-                    {{month}}월 (월 변경 버튼 만들기)
+                    <b-button @click="decreaseDate()">&lt;</b-button>
+                </b-col>
+                <b-col>
+                    {{year}}년 {{month}}월
+                </b-col>
+                <b-col>
+                    <b-button @click="increaseDate()">></b-button>
                 </b-col>
             </b-row>
             <b-row>
-                <b-col v-for="item in selectedMonth(this.month)" :key="item" cols="3">
+                <b-col>
                     <b-container class="memoCard">
-                        <b-row>
-                            <b-col>
-                                a
+                        <b-row v-for="item in selectedData" :key="item.no" align-h="around">
+                            <b-col cols="1"></b-col>        <!-- 좌 여백 -->
+                            <b-col cols="1">
+                                {{ item.date }}
                             </b-col>
+                            <b-col cols="6">
+                                {{ item.content }}
+                            </b-col>
+                            <b-col cols="1"></b-col>        <!-- 우 여백 -->
                         </b-row>
                     </b-container>
                 </b-col>                
@@ -27,39 +38,59 @@
 </template>
 
 <script>
+import calendarData from '@/data/CalendarData'
+
 export default {
     data(){
+        let today = new Date();
+        let month = today.getMonth() + 1
+        let year = today.getFullYear()
+
         return{
-            month: '2',
-            year: '2021'
+            month: month,
+            year: year,
+            data: calendarData,
         }
     },
     methods: {
-        selectedMonth(m){
-            if( m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12){
-                return 31
+        decreaseDate(){
+            if(--this.month < 1){
+                this.year--
+                this.month = 12
             }
-            else if( m == 2 ){
-                if(this.year % 400 == 0 ){
-                    return 29
-                }
-                else if(this.year % 4 == 0 && this.year % 100 != 0){
-                    return 29
-                }
-                else{
-                    return 28
-                }
-            }
-            else{
-                return 30
+        },
+        increaseDate(){
+            if(++this.month > 12){
+                this.year++
+                this.month = 1
             }
         }
     },
+    computed: {
+        selectedData(){
+            let temp = []
+            let nowDate = ''
+
+            if(this.month < 10){
+                nowDate = `${this.year}-0${this.month}`
+            } else{
+                nowDate = `${this.year}-${this.month}`
+            }
+
+            for(let i = 0; i < this.data.length; i++){
+                if(this.data[i].date.startsWith(nowDate)){
+                    temp.push(this.data[i])
+                }
+            }
+
+            return temp;
+        }
+    }
 }
 </script>
 
 <style>
 .memoCard{
-    background-color: aquamarine;
+    background-color: beige;
 }
 </style>

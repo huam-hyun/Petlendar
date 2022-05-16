@@ -6,14 +6,13 @@
                 <b-col cols="3">
                     <b-calendar block v-model="date" @context="onContext" :hide-header="true"></b-calendar>
                 </b-col>
-                {{initialDate}}
                 <b-col cols="5">
                     <b-card>
                         <b-card-header>
                             {{date}}
                         </b-card-header>
                         <span v-if="selectedData.length">
-                            <b-card v-for="memo in data" :key="memo.no">
+                            <b-card v-for="memo in selectedData" :key="memo.no">
                                 <b-row>
                                     <b-col>
                                         {{memo.content}}
