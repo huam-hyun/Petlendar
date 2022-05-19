@@ -1,0 +1,16 @@
+export default[
+    {
+        no: 1,
+        date: '2022-05-12',
+        content: '병원에 갔다왔다',
+        petname: '콩이',
+        master: '박상현',
+    },
+    {
+        no: 2,
+        date: '2022-05-12',
+        content: '산책을 했다',
+        petname: '콩이',
+        master: '박상현',
+    }
+]

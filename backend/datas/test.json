@@ -1,0 +1,12 @@
+[
+    {
+        "id" : 1,
+        "name": "박상현",
+        "content" : "Hello World!"
+    },
+    {
+        "id" : 2,
+        "name": "김혁주",
+        "content" : "Hi!"
+    }
+]
