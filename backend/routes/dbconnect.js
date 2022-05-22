@@ -10,10 +10,6 @@ var connection = mysql.createConnection({
   database: 'Petlendar'
 });
 
-connection.connect(function(err){
-  if(err) throw err;
-});
-
 router.post('/regist', function(req, res){
     const user = {
         'ID' : req.body.ID,
@@ -28,5 +24,14 @@ router.post('/regist', function(req, res){
         res.status(200).send('success');
     });
 });
+
+router.post('/list', function(req, res){
+  connection.query('select * from User', function(err, result){
+    if(err){
+      throw err;
+    }
+    res.status(200).send(result);
+  })
+})
 
 module.exports = router;

@@ -12,15 +12,15 @@
                     비용
                 </b-col>
             </b-row>
-            <b-row align-h="center" v-for="item in List" :key="item.no" @click="onClick(item.no)" class="listContent">
+            <b-row align-h="center" v-for="item in List" :key="item.no" @click="onClick(item.MedicalNo)" class="listContent">
                 <b-col cols="2">
-                    {{item.date}}
+                    {{item.MedicalDate}}
                 </b-col>
                 <b-col cols="4">
-                    {{item.cause}}
+                    {{item.Cause}}
                 </b-col>
                 <b-col cols="2">
-                    {{item.cost}}
+                    {{item.Cost}}
                 </b-col>
             </b-row>
         </b-container>
@@ -29,12 +29,10 @@
 </template>
 
 <script>
-import Data from '@/data/PetData'
-
 export default {
     data(){
         return{
-            List: Data
+            List: []
         }
     },
     methods:{
@@ -44,6 +42,12 @@ export default {
         goWrite(){
             this.$router.push({name:'MedicalWrite'})
         }
+    },
+    created(){
+        this.$http.post('/medical/list').then((res) =>{
+            console.log(res);
+            this.List = res.data;
+        })
     }
 }
 </script>

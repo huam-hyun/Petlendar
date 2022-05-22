@@ -12,13 +12,13 @@
                             {{date}}
                         </b-card-header>
                         <span v-if="selectedData.length">
-                            <b-card v-for="memo in selectedData" :key="memo.no">
+                            <b-card v-for="memo in selectedData" :key="memo.CalendarNo">
                                 <b-row>
                                     <b-col>
-                                        {{memo.content}}
+                                        {{memo.Content}}
                                     </b-col>
                                     <b-col cols="1">
-                                        <b-button @click="deleteData(memo.no)">X</b-button>
+                                        <b-button @click="deleteData(memo.CalendarNo)">X</b-button>
                                     </b-col>
                                 </b-row>
                             </b-card>
@@ -61,8 +61,6 @@
 </template>
 
 <script>
-import calendarData from '@/data/CalendarData'
-
 export default {
     data(){
         let today = new Date();
@@ -74,7 +72,7 @@ export default {
 
         return{
             date: today,
-            data: calendarData,
+            data: [],
             content: '',
         }
     },

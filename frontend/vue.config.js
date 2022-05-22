@@ -10,8 +10,11 @@ module.exports = {
         },
         '/db': {
             target: 'http://localhost:3000'
-        } 
-      } 
+        },
+        '/medical': {
+          target: 'http://localhost:3000'
+        }
+      },
     },
     outputDir: '../backend/public',
   }

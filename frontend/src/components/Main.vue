@@ -13,6 +13,11 @@
                 <br>
                 <button @click="axiosPost">전송</button>
             </b-row>
+            <b-row v-for="item in IDs" :key="item.UserNo">
+                ID : {{item.ID}}<br>
+                PW : {{item.PW}}<br>
+                이름 : {{item.UserName}}
+            </b-row>
         </b-container>
     </div>
 </template>
@@ -23,7 +28,8 @@ export default {
         return{
             ID : '',
             PW : '',
-            Name: ''
+            Name: '',
+            IDs: []
         }
     },
     methods:{
@@ -42,6 +48,15 @@ export default {
                 console.error(err)
             })
         }
+    },
+    created(){
+        this.$http({
+            url: '/db/list',
+            method: 'post'
+        }).then((res) =>{
+            console.log(res);
+            this.IDs = res.data;
+        })
     }
 }
 </script>
