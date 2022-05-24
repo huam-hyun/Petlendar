@@ -12,7 +12,7 @@
                     비용
                 </b-col>
             </b-row>
-            <b-row align-h="center" v-for="item in List" :key="item.no" @click="onClick(item.MedicalNo)" class="listContent">
+            <b-row align-h="center" v-for="item in List" :key="item.no" @click="onClick(item)" class="listContent">
                 <b-col cols="2">
                     {{item.MedicalDate}}
                 </b-col>
@@ -36,8 +36,8 @@ export default {
         }
     },
     methods:{
-        onClick(num){
-            this.$router.push({name:'MedicalDetail', params:{no: num}})
+        onClick(item){
+            this.$router.push({name:'MedicalDetail', params:{MedicalData: item}})
         },
         goWrite(){
             this.$router.push({name:'MedicalWrite'})
@@ -46,7 +46,9 @@ export default {
     created(){
         this.$http.post('/medical/list').then((res) =>{
             console.log(res);
-            this.List = res.data;
+            if(res.data){
+                this.List = res.data;
+            }
         })
     }
 }
