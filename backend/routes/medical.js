@@ -15,7 +15,7 @@ var connection = mysql.createConnection({
 
 router.post('/list', function(req, res){
     // const ID = req.body.ID;
-    const sql = `select * from MedicalData`;
+    const sql = `select * from MedicalData order by MedicalDate`;
     const query = connection.query(sql, function(err, result){
       if(err){
         console.error(err);
@@ -46,7 +46,7 @@ router.post('/write', function(req, res){
 });
 
 router.post('/update', function(req, res){
-    const sql = `update MedicalData set MedicalDate=?, MedicalDate=?, Cause=?, Content=?, Prescription=?, Cost=? where MedicalNo=${req.body.MedicalNo}`;
+    const sql = `update MedicalData set MedicalDate=?, Cause=?, Content=?, Prescription=?, Cost=? where MedicalNo=${req.body.MedicalNo}`;
     const MedicalDate = req.body.MedicalDate;
     const Cause = req.body.Cause;
     const Content = req.body.Content;

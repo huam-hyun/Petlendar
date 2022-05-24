@@ -13,6 +13,9 @@ module.exports = {
         },
         '/medical': {
           target: 'http://localhost:3000'
+        },
+        '/calendar': {
+          target: 'http://localhost:3000'
         }
       },
     },
