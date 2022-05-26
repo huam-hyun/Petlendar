@@ -87,7 +87,7 @@ export default {
                 WriteDate: this.date,
                 Content: this.content,
                 MasterID: 'test',
-                PetID: 1
+                PetID: 2
             }
             this.forAddData.push(newData);
             this.num++;
@@ -111,19 +111,27 @@ export default {
             
         },
         save(){
-            if(this.addData.length){
+            if(this.forAddData.length){
+                let data = [];
+                for(let i = 0;i < this.forAddData.length; i++){
+                    delete this.forAddData[i].tempNo;
+                    data.push(Object.values(this.forAddData[i]))
+                }
+                this.forAddData=[]
+                console.log(data)
                 this.$http({
-                    url: '/calendar/add',
+                    url: '/calendar/data',
                     method:'post',
-                    data: this.forAddData
+                    data: data
                 });
             }
-            if(this.deleteData.length){
+            if(this.forDeleteData.length){
                 this.$http({
-                    url: '/calendar/delete',
-                    method: 'post',
+                    url: '/calendar/data',
+                    method: 'delete',
                     data: this.forDeleteData
                 });
+                this.forDeleteData=[]
             }
         }
     },
@@ -146,8 +154,8 @@ export default {
     },
     created(){
         this.$http({
-            url: '/calendar/list',
-            method: 'post'
+            url: '/calendar/data',
+            method: 'get'
         }).then(res =>{
             this.CalendarData = res.data;
         })
