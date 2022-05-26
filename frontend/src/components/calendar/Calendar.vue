@@ -36,7 +36,7 @@
                             </b-card>
                         </span>
                         <span v-if="!selectedData.length">
-                            <b-card>특이사항 없음</b-card>
+                            <b-card>기록 없음</b-card>
                             <b-card>
                                 <b-row align-h="around">
                                     <b-col cols="10">
@@ -56,7 +56,7 @@
                 <b-col cols="1"></b-col>
             </b-row>
         </b-container>
-        <b-button @click="goList()">리스트보기</b-button>
+        <router-link to="/Calendar/List">리스트보기</router-link>
         <b-button @click="save()">저장</b-button>
     </div>
 </template>
@@ -107,9 +107,6 @@ export default {
                 this.forAddData.splice(index, 1);
             }
         },
-        goList(){
-            
-        },
         save(){
             if(this.forAddData.length){
                 let data = [];
@@ -123,14 +120,14 @@ export default {
                     url: '/calendar/data',
                     method:'post',
                     data: data
-                });
+                })
             }
             if(this.forDeleteData.length){
                 this.$http({
                     url: '/calendar/data',
                     method: 'delete',
                     data: this.forDeleteData
-                });
+                })
                 this.forDeleteData=[]
             }
         }
