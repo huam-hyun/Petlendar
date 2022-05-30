@@ -20,13 +20,29 @@
             <b-row>
                 <b-col>
                     <b-container class="memoCard">
-                        <b-row v-for="item in selectedData" :key="item.no" align-h="around">
+                        <b-row align-h="around">
                             <b-col cols="1"></b-col>        <!-- 좌 여백 -->
-                            <b-col cols="1">
-                                {{ item.date }}
+                            <b-col cols="2">
+                                날짜
                             </b-col>
                             <b-col cols="6">
-                                {{ item.content }}
+                                내용
+                            </b-col>
+                            <b-col cols="2">
+                                펫 이름
+                            </b-col>
+                            <b-col cols="1"></b-col>        <!-- 우 여백 -->
+                        </b-row>
+                        <b-row v-for="item in selectedData" :key="item.no" align-h="around">
+                            <b-col cols="1"></b-col>        <!-- 좌 여백 -->
+                            <b-col cols="2">
+                                {{ item.WriteDate }}
+                            </b-col>
+                            <b-col cols="6">
+                                {{ item.Content }}
+                            </b-col>
+                            <b-col cols="2">
+                                펫 이름 넣을곳
                             </b-col>
                             <b-col cols="1"></b-col>        <!-- 우 여백 -->
                         </b-row>
@@ -38,8 +54,6 @@
 </template>
 
 <script>
-import calendarData from '@/data/CalendarData'
-
 export default {
     data(){
         let today = new Date();
@@ -49,7 +63,7 @@ export default {
         return{
             month: month,
             year: year,
-            data: calendarData,
+            CalendarData: [],
         }
     },
     methods: {
@@ -77,14 +91,23 @@ export default {
                 nowDate = `${this.year}-${this.month}`
             }
 
-            for(let i = 0; i < this.data.length; i++){
-                if(this.data[i].date.startsWith(nowDate)){
-                    temp.push(this.data[i])
+            const length = this.CalendarData.length;
+            for(let i = 0; i < length ; i++){
+                if(this.CalendarData[i].WriteDate.startsWith(nowDate)){
+                    temp.push(this.CalendarData[i])
                 }
             }
 
             return temp;
         }
+    },
+    created(){
+        this.$http({
+            url: '/calendar/data',
+            method: 'get'
+        }).then(res =>{
+            this.CalendarData = res.data;
+        })
     }
 }
 </script>

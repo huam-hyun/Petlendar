@@ -8,6 +8,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import router from './router/index.js'
 import axios from 'axios'
+import {store} from './store/store'
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
@@ -19,5 +20,6 @@ Vue.prototype.$http = axios;
 
 new Vue({
   router,
+  store,
   render: h => h(App),
 }).$mount('#app')

@@ -56,7 +56,7 @@
                 <b-col cols="1"></b-col>
             </b-row>
         </b-container>
-        <router-link to="/Calendar/List">리스트보기</router-link>
+        <b-button @click="List()">리스트보기</b-button>
         <b-button @click="save()">저장</b-button>
     </div>
 </template>
@@ -130,6 +130,9 @@ export default {
                 })
                 this.forDeleteData=[]
             }
+        },
+        List(){
+            this.$router.push({name: 'CalendarList', params: this.CalendarData})
         }
     },
     computed: {
