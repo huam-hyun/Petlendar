@@ -26,7 +26,8 @@ router.post('/regist', function(req, res){
 });
 
 router.post('/list', function(req, res){
-  connection.query('select * from User', function(err, result){
+  const ID = req.body.ID
+  connection.query('select UserName from User where ID=?', ID, function(err, result){
     if(err){
       throw err;
     }

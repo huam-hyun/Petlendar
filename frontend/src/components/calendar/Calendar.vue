@@ -108,6 +108,7 @@ export default {
             }
         },
         save(){
+            // vuex 적용으로 코드 변경 예정
             if(this.forAddData.length){
                 let data = [];
                 for(let i = 0;i < this.forAddData.length; i++){
@@ -153,6 +154,7 @@ export default {
         } ,
     },
     created(){
+        // vuex 연동 완료하고 나면 삭제될 예정
         this.$http({
             url: '/calendar/data',
             method: 'get'

@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import UserInfo from './modules/user'
-import Calendar from './modules/calendar'
-import Medical from './modules/medical'
+import User from './modules/userStore'
+import Calendar from './modules/calendarStore'
+import Medical from './modules/medicalStore'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     modules: {
-        user: UserInfo,
+        user: User,
         Medical: Medical,
         Calendar: Calendar
     }
