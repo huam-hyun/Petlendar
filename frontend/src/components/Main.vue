@@ -23,27 +23,31 @@
 </template>
 
 <script>
+const cryptoJS = require('crypto-js')
+
 export default {
     data(){
         return{
             ID : '',
             PW : '',
             Name: '',
-            IDs: []
+            IDs: [],
         }
     },
     methods:{
         axiosPost(){
+            const encrypted = cryptoJS.AES.encrypt(this.PW, '안녕').toString()
             this.$http({
                 url: '/db/regist',
                 method: 'post',
                 data: {
                     ID: this.ID,
-                    PW: this.PW,
+                    PW: encrypted,
                     Name: this.Name
                 }
             }).then((res)=>{
-                console.log(res)
+                alert('등록 완료')
+                console.log(res);
             }).catch((err)=>{
                 console.error(err)
             })
@@ -57,6 +61,6 @@ export default {
             console.log(res);
             this.IDs = res.data;
         })
-    }
+    },
 }
 </script>

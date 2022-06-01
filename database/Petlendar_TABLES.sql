@@ -1,6 +1,6 @@
 CREATE TABLE User(
 	ID varchar(15) primary key,
-    PW varchar(20),
+    PW varchar(45),
     UserName varchar(20)
 );
 

@@ -18,9 +18,7 @@ const userStore = {
                 url: '/db/list',
                 method: 'get',
                 data: ''
-            }).then(res=>{
-                commit('setUserName', res.data[0].UserName);
-            });
+            })
         }
     }
 }
