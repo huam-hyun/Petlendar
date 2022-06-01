@@ -8,7 +8,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import router from './router/index.js'
 import axios from 'axios'
-import {store} from './store/index'
+import store from './store/index.js'
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)

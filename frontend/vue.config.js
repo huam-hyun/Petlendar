@@ -8,13 +8,16 @@ module.exports = {
             '^/api': ''
           } 
         },
-        '/db': {
+        '/user': {
             target: 'http://localhost:3000'
         },
         '/medical': {
           target: 'http://localhost:3000'
         },
         '/calendar': {
+          target: 'http://localhost:3000'
+        },
+        '/pet': {
           target: 'http://localhost:3000'
         }
       },

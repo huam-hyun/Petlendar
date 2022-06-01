@@ -5,9 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var testRouter = require('./routes/test');
-const dbRouter = require('./routes/dbconnect');
+const UserRouter = require('./routes/user');
 const Medical = require('./routes/medical');
 const Calendar = require('./routes/calendar');
 
@@ -25,9 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // 라우터
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/api/tests', testRouter);
-app.use('/db', dbRouter);
+app.use('/user', UserRouter);
 app.use('/medical', Medical);
 app.use('/calendar', Calendar);
 
