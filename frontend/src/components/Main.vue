@@ -1,17 +1,18 @@
 <template>
     <div>
         <b-container>
+            회원가입 기능 확인
             <b-row>
                 <label for="userid">아이디</label>
-                <input v-model="ID" type="text">
+                <input v-model="Register.ID" type="text">
                 <hr>
                 <label for="password">비밀번호</label>
-                <input v-model="PW" type="text">
+                <input v-model="Register.PW" type="text">
                 <hr>
                 <label for="name">이름</label>
-                <input v-model="Name" type="text">
+                <input v-model="Register.Name" type="text">
                 <br>
-                <button @click="axiosPost">전송</button>
+                <button @click="register(Register)">전송</button>
             </b-row>
             <b-row v-for="item in IDs" :key="item.UserNo">
                 ID : {{item.ID}}<br>
@@ -28,7 +29,7 @@
                 <label for="password">비밀번호</label>
                 <input v-model="Login.PW" type="text">
                 <hr>
-                <button @click="login">전송</button>
+                <button @click="login(Login)">전송</button>
             </b-row>
             <b-row>
                 ID : {{userID}}<br>
@@ -39,73 +40,32 @@
 </template>
 
 <script>
-import {mapMutations, mapState} from 'vuex'
-const cryptoJS = require('crypto-js')
+import {createNamespacedHelpers} from 'vuex'
+const calendarStore = createNamespacedHelpers('calendarStore')
+const medicalStore = createNamespacedHelpers('medicalStore')
+const userStore = createNamespacedHelpers('userStore')
 
 export default {
     data(){
         return{
-            ID : '',
-            PW : '',
             Name: '',
             IDs: [],
             Login: {
                 ID: '',
                 PW: '',
             },
+            Register: {
+                ID: '',
+                PW: '',
+                Name: '',
+            }
         }
     },
     methods:{
-        axiosPost(){
-            const hashed = cryptoJS.MD5(this.PW).toString()
-            this.$http({
-                url: '/user/data',
-                method: 'post',
-                data: {
-                    ID: this.ID,
-                    PW: hashed,
-                    Name: this.Name
-                }
-            }).then((res)=>{
-                alert('등록 완료')
-                this.ID = ''
-                this.PW = ''
-                this.Name = ''
-                console.log(res);
-            }).catch((err)=>{
-                console.error(err)
-            })
-        },
-        login(){
-            const hashed = cryptoJS.MD5(this.Login.PW).toString()
-            this.$http({
-                url: '/user/login',
-                method: 'post',
-                data: {
-                    ID: this.Login.ID,
-                    PW: hashed
-                }
-            }).then(res=>{
-                console.log(res)
-                const user = {
-                    ID: res.data[0].ID,
-                    Name: res.data[0].UserName
-                }
-                this.setUser(user)
-                this.Login.ID = ''
-                this.Login.PW = ''
-            });
-            // this.$http({
-            //     url: '/pet/data',
-            //     method: 'get',
-            //     data: this.User.ID
-            // }).then(res=>{
-            //     const pets = res.data
-
-            //     this.setPets(pets)
-            // })
-        },
-        ...mapMutations('userStore', ['setUser', 'setPets'])
+        ...userStore.mapMutations(['setUser', 'setPets']),
+        ...userStore.mapActions(['login', 'register']),
+        ...calendarStore.mapMutations([]),
+        ...medicalStore.mapMutations([]), 
     },
     created(){
         this.$http({
@@ -117,7 +77,9 @@ export default {
         })
     },
     computed: {
-        ...mapState('userStore', ['userName', 'userID', 'Pets'])
+        ...userStore.mapState(['userName', 'userID', 'Pets']),
+        ...calendarStore.mapState([]),
+        ...medicalStore.mapState([])
     }
 }
 </script>

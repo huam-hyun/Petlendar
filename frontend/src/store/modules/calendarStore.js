@@ -11,7 +11,9 @@ const calendarStore = {
         }
     },
     mutations: {
-
+        setCalendar(state, payload){
+            state.calendarData = payload
+        }
     },
     actions: {
         saveData(addData, deleteData){
