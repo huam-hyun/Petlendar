@@ -1,19 +1,18 @@
 export default {
     namespaced: true,
     state: {
-        User: {
-            Name: '',
-            ID: ''
-        },
+        userName: '',
+        userID: '',
         Pets: []
     },
     getters: {
-        
+
     },
     mutations: {
         setUser(state, payload){
-            state.User.Name = payload.Name
-            state.User.ID = payload.ID
+            state.userName = payload.Name
+            state.userID = payload.ID
+            // console.log(state.User)
         },
         setPets(state, payload){
             for(let i = 0; i < payload.length; i++){
@@ -22,34 +21,6 @@ export default {
         }
     },
     actions: {
-        // getUserInfo({commit, dispatch}, Auth){
-        //     this.$http({
-        //         url: '/user/login',
-        //         method: 'post',
-        //         data: Auth
-        //     }).then((res)=>{
-        //         const userInfo = res.data[0]    // {ID: '', UserName: ''}
-        //         if(userInfo){
-        //             commit('setUser', userInfo)
-        //             dispatch('getPetInfo', {
-        //                 ID: userInfo.ID
-        //             })
-        //         }else{
-        //             // !userInfo
-        //         }
-        //     })
-        // },
-        // getPetInfo({commit}, payload){
-        //     this.$http({
-        //         url: '/pet/data',
-        //         method: 'get',
-        //         data: payload.ID
-        //     }).then(res=>{
-        //         const petInfo = res.data
-        //         if(petInfo){
-        //             commit('setPets', petInfo)
-        //         }
-        //     })
-        // }
+        
     }
 }

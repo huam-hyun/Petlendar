@@ -31,15 +31,15 @@
                 <button @click="login">전송</button>
             </b-row>
             <b-row>
-                ID : {{User.ID}}<br>
-                이름 : {{User.Name}}
+                ID : {{userID}}<br>
+                이름 : {{userName}}
             </b-row>
         </b-container>
     </div>
 </template>
 
 <script>
-import {mapMutations, mapState, mapGetters} from 'vuex'
+import {mapMutations, mapState} from 'vuex'
 const cryptoJS = require('crypto-js')
 
 export default {
@@ -53,18 +53,17 @@ export default {
                 ID: '',
                 PW: '',
             },
-            ...mapState('userStore', ['User', 'Pets'])
         }
     },
     methods:{
         axiosPost(){
-            const encrypted = cryptoJS.AES.encrypt(this.PW, '안녕').toString()
+            const hashed = cryptoJS.MD5(this.PW).toString()
             this.$http({
                 url: '/user/data',
                 method: 'post',
                 data: {
                     ID: this.ID,
-                    PW: encrypted,
+                    PW: hashed,
                     Name: this.Name
                 }
             }).then((res)=>{
@@ -78,24 +77,23 @@ export default {
             })
         },
         login(){
-            const encrypted = cryptoJS.AES.encrypt(this.Login.PW, '안녕').toString()
-            const loginData = {
-                ID: this.Login.ID,
-                PW: encrypted
-            }
+            const hashed = cryptoJS.MD5(this.Login.PW).toString()
             this.$http({
                 url: '/user/login',
                 method: 'post',
-                data: loginData
+                data: {
+                    ID: this.Login.ID,
+                    PW: hashed
+                }
             }).then(res=>{
                 console.log(res)
                 const user = {
-                    ID: res.data.ID,
-                    Name: res.data.UserName
+                    ID: res.data[0].ID,
+                    Name: res.data[0].UserName
                 }
                 this.setUser(user)
-                // console.log(this.User.ID)
-                // console.log(this.User.Name)
+                this.Login.ID = ''
+                this.Login.PW = ''
             });
             // this.$http({
             //     url: '/pet/data',
@@ -118,8 +116,8 @@ export default {
             this.IDs = res.data;
         })
     },
-    coumputed: {
-        ...mapGetters('userStore', [''])
+    computed: {
+        ...mapState('userStore', ['userName', 'userID', 'Pets'])
     }
 }
 </script>
