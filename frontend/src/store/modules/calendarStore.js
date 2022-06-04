@@ -1,4 +1,6 @@
-const calendarStore = {
+import axios from 'axios'
+
+export default {
     namespaced: true,
     state: {
         calendarData: [],
@@ -16,7 +18,20 @@ const calendarStore = {
         }
     },
     actions: {
-        saveData(addData, deleteData){
+        getCalendar({commit}, ID){
+            axios({
+                url: '/calendar/data',
+                method: 'get',
+                data: ID
+            }).then(res=>{
+                if(res.data){
+                    commit('setCalendar', res.data)
+                }
+            })
+        },
+        saveData({commit}, payload){
+            console.log(payload)
+            const [addData, deleteData, ID] = payload
             // 추가된 목록이 있다면 실행
             if(addData){
                 let data = []
@@ -24,18 +39,20 @@ const calendarStore = {
                     delete addData[i].tempNo;
                     data.push(Object.values(addData[i]))
                 }
-                
-                console.log(data)
+                data.push(ID)
 
-                this.$http({
+                axios({
                     url: '/calendar/data',
                     method: 'post',
                     data: data
+                }).then(res=>{
+                    console.log(res)
+                    commit('')
                 })
             }
             // 삭제한 목록이 있다면 실행
             if(deleteData){
-                this.$http({
+                axios({
                     url: '/calendar/data',
                     method: 'delete',
                     data: deleteData
@@ -43,8 +60,4 @@ const calendarStore = {
             }
         }
     }
-}
-
-export default {
-    calendarStore
 }

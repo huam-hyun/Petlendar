@@ -12,14 +12,10 @@
                 <label for="name">이름</label>
                 <input v-model="Register.Name" type="text">
                 <br>
-                <button @click="register(Register)">전송</button>
-            </b-row>
-            <b-row v-for="item in IDs" :key="item.UserNo">
-                ID : {{item.ID}}<br>
-                PW : {{item.PW}}<br>
-                이름 : {{item.UserName}}
+                <button @click="newUser">전송</button>
             </b-row>
         </b-container>
+        <hr>
         <b-container>
             로그인 기능 확인
             <b-row>
@@ -29,7 +25,7 @@
                 <label for="password">비밀번호</label>
                 <input v-model="Login.PW" type="text">
                 <hr>
-                <button @click="login(Login)">전송</button>
+                <button @click="setUser">전송</button>
             </b-row>
             <b-row>
                 ID : {{userID}}<br>
@@ -48,8 +44,6 @@ const userStore = createNamespacedHelpers('userStore')
 export default {
     data(){
         return{
-            Name: '',
-            IDs: [],
             Login: {
                 ID: '',
                 PW: '',
@@ -64,17 +58,31 @@ export default {
     methods:{
         ...userStore.mapMutations(['setUser', 'setPets']),
         ...userStore.mapActions(['login', 'register']),
-        ...calendarStore.mapMutations([]),
-        ...medicalStore.mapMutations([]), 
+        ...calendarStore.mapActions(['getCalendar']),
+        ...medicalStore.mapActions(['getMedical']),
+        newUser(){
+            this.register(this.Register)
+            this.Register.ID = ''
+            this.Register.PW = ''
+            this.Register.Name = ''
+        },
+        setUser(){
+            // 로그인
+            this.login(this.Login)
+            this.Login.ID = ''
+            this.Login.PW = ''
+
+            if(this.userID){    // 로그인 성공시
+                // 캘린더정보 불러오기
+                this.getCalendar(this.userID)
+
+                // 의료정보 불러오기
+                this.getMedical(this.userID)
+            }
+        },
     },
     created(){
-        this.$http({
-            url: '/user/list',
-            method: 'get'
-        }).then((res) =>{
-            console.log(res);
-            this.IDs = res.data;
-        })
+        
     },
     computed: {
         ...userStore.mapState(['userName', 'userID', 'Pets']),
