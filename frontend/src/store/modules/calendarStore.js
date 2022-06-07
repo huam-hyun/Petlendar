@@ -1,4 +1,4 @@
-const calendarStore = {
+export default {
     namespaced: true,
     state: {
         calendarData: [],
@@ -13,7 +13,7 @@ const calendarStore = {
     mutations: {
         setCalendar(state, payload){
             state.calendarData = payload
-        }
+        },
     },
     actions: {
         saveData(addData, deleteData){
@@ -43,8 +43,4 @@ const calendarStore = {
             }
         }
     }
-}
-
-export default {
-    calendarStore
 }

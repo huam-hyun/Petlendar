@@ -14,8 +14,8 @@
                 <b-col cols="2" @click="goMedical">
                     의료일지
                 </b-col>
-                <b-col cols="2">
-                    
+                <b-col cols="2" @click="goPet">
+                    펫
                 </b-col>
             </b-row>
         </b-container>
@@ -38,6 +38,9 @@ export default {
         },
         goMedical(){
             this.$router.push('/Medical/List')
+        },
+        goPet(){
+            this.$router.push('/User/Pet')
         }
     }
 }

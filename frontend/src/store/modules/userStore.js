@@ -15,7 +15,6 @@ export default {
         setUser(state, payload){
             state.userName = payload.Name
             state.userID = payload.ID
-            // console.log(state.User)
         },
         setPets(state, payload){
             for(let i = 0; i < payload.length; i++){
@@ -47,6 +46,9 @@ export default {
                     commit('setUser', user)
                 }
             })
+
+            // calendarStore 디스패치(calendar 데이터 불러오기)
+            // medicalStore 디스패치(medical 데이터 불러오기)
         },
         register(context, payload){
             axios({
@@ -62,6 +64,31 @@ export default {
                 console.log(res)
             }).catch(err=>{
                 console.error(err)
+            })
+        },
+        getPet({state, commit}){
+            axios({
+                url: '/pet/data',
+                method: 'get',
+                data: state.userID
+            }).then(res=>{
+                if(res.data){
+                    commit('setPets', res.data)
+                }
+            })
+        },
+        registerPet(context, payload){
+            console.log(payload)
+            const petData = Object.values(payload)
+            axios({
+                url: '/pet/data',
+                method: 'post',
+                data: petData
+            }).then(res=>{
+                console.log(res);
+                if(res.status === 200){
+                    alert('등록 완료')
+                }
             })
         }
     }

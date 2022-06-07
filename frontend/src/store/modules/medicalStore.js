@@ -1,4 +1,4 @@
-const medicalStore = {
+export default {
     namespaced: true,
     state: {
 
@@ -12,8 +12,4 @@ const medicalStore = {
     actions: {
         
     }
-}
-
-export default {
-    medicalStore
 }

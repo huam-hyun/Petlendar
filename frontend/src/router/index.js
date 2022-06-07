@@ -4,6 +4,9 @@ import Router from 'vue-router'
 //메인화면
 import Main from '@/components/Main.vue'
 
+//사용자
+import Pet from '@/components/user/Pet.vue'
+
 //캘린더
 import CalendarList from '@/components/calendar/List.vue'
 import CalendarView from '@/components/calendar/Calendar.vue'
@@ -47,6 +50,11 @@ export default new Router({
             path: '/medical/detail',
             name: 'MedicalDetail',
             component: MedicalDetail
+        },
+        {
+            path: '/user/pet',
+            name: 'Pet',
+            component: Pet
         },
     ]
 })

@@ -9,6 +9,7 @@ var testRouter = require('./routes/test');
 const UserRouter = require('./routes/user');
 const Medical = require('./routes/medical');
 const Calendar = require('./routes/calendar');
+const petRouter = require('./routes/pet')
 
 var app = express();
 
@@ -28,6 +29,7 @@ app.use('/api/tests', testRouter);
 app.use('/user', UserRouter);
 app.use('/medical', Medical);
 app.use('/calendar', Calendar);
+app.use('/pet', petRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
