@@ -62,13 +62,18 @@
 </template>
 
 <script>
+import {createNamespacedHelpers} from 'vuex'
+const userStore = createNamespacedHelpers('userStore')
+const calendarStore = createNamespacedHelpers('calendarStore')
+
 export default {
     data(){
         let today = new Date();
         let month = today.getMonth() + 1
-        if(month < 10) month = '0' + month
         let year = today.getFullYear()
         let day = today.getDate()
+        if(month < 10) month = '0' + month
+        if(day < 10) day = '0' + day
         today = `${year}-${month}-${day}`
 
         return{
@@ -77,7 +82,7 @@ export default {
             content: '',
             forAddData: [],
             forDeleteData: [],
-            num: 0
+            num: 0,
         }
     },
     methods: {
@@ -86,8 +91,8 @@ export default {
                 tempNo: this.num,
                 WriteDate: this.date,
                 Content: this.content,
-                MasterID: 'test',
-                PetID: 2
+                MasterID: this.userID,
+                PetName: '콩이'
             }
             this.forAddData.push(newData);
             this.num++;
@@ -108,33 +113,40 @@ export default {
             }
         },
         save(){
+            const addData = this.forAddData ? this.forAddData : 0
+            const deleteData = this.forDeleteData ? this.forDeleteData : 0
+            const payload = [ addData, deleteData, this.userID ]
+
+            this.saveData(payload)
+
             // vuex 적용으로 코드 변경 예정
-            if(this.forAddData.length){
-                let data = [];
-                for(let i = 0;i < this.forAddData.length; i++){
-                    delete this.forAddData[i].tempNo;
-                    data.push(Object.values(this.forAddData[i]))
-                }
-                this.forAddData=[]
-                console.log(data)
-                this.$http({
-                    url: '/calendar/data',
-                    method:'post',
-                    data: data
-                })
-            }
-            if(this.forDeleteData.length){
-                this.$http({
-                    url: '/calendar/data',
-                    method: 'delete',
-                    data: this.forDeleteData
-                })
-                this.forDeleteData=[]
-            }
+            // if(this.forAddData.length){
+            //     let data = [];
+            //     for(let i = 0;i < this.forAddData.length; i++){
+            //         delete this.forAddData[i].tempNo;
+            //         data.push(Object.values(this.forAddData[i]))
+            //     }
+            //     this.forAddData=[]
+            //     console.log(data)
+            //     this.$http({
+            //         url: '/calendar/data',
+            //         method:'post',
+            //         data: data
+            //     })
+            // }
+            // if(this.forDeleteData.length){
+            //     this.$http({
+            //         url: '/calendar/data',
+            //         method: 'delete',
+            //         data: this.forDeleteData
+            //     })
+            //     this.forDeleteData=[]
+            // }
         },
         List(){
             this.$router.push({name: 'CalendarList', params: this.CalendarData})
-        }
+        },
+        ...calendarStore.mapActions(['saveData'])
     },
     computed: {
         selectedData : function(){
@@ -151,7 +163,8 @@ export default {
                 }
             }
             return temp
-        } ,
+        },
+        ...userStore.mapState(['userID'])
     },
     created(){
         // vuex 연동 완료하고 나면 삭제될 예정

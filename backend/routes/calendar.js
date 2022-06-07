@@ -23,14 +23,15 @@ router.get('/data', function(req, res){
 });
 
 router.post('/data', function(req, res){
-    const sql = 'insert into CalendarData(WriteDate, Content, MasterID, PetID) values ?'
+    const sql1 = 'insert into CalendarData(WriteDate, Content, MasterID, PetName) values ?;'
+    const sql2 = 'select * from User where userID=?;'
     let values = [...req.body];
     console.log(values);
 
     connection.query(sql, [values], (err, result)=>{
         if(err) throw err;
 
-        res.status(200).send('추가 완료');
+        res.status(200).send(result);
     })
 });
 

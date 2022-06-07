@@ -19,9 +19,8 @@ CREATE TABLE CalendarData(
     Content varchar(100),
     WriteDate varchar(10),
     MasterID varchar(15),
-    PetID int,
-    foreign key(MasterID) references User(ID) on delete cascade,
-    foreign key(PetID) references Pet(PetID) on delete cascade
+    PetName varchar(20),
+    foreign key(MasterID) references User(ID) on delete cascade
 );
 
 CREATE TABLE MedicalData(
@@ -31,10 +30,9 @@ CREATE TABLE MedicalData(
     Content varchar(50),
     Prescription varchar(50),
     Cost int,
-    PetID int,
+    PetName varchar(20),
     MasterID varchar(15),
-    foreign key(MasterID) references User(ID) on delete cascade,
-    foreign key(PetID) references Pet(PetID) on delete cascade
+    foreign key(MasterID) references User(ID) on delete cascade
 );
 
 drop table CalendarData;
