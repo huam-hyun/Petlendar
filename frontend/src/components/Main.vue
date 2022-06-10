@@ -31,6 +31,14 @@
                 ID : {{userID}}<br>
                 이름 : {{userName}}
             </b-row>
+            <hr>
+            <b-row v-for="item in pets" :key="item.MasterID">
+                <b-col>
+                    이름: {{item.PetName}}
+                    성별: {{item.Sex}}
+                    종류: {{item.PetType}}
+                </b-col>
+            </b-row>
         </b-container>
     </div>
 </template>
@@ -40,6 +48,7 @@ import {createNamespacedHelpers} from 'vuex'
 const calendarStore = createNamespacedHelpers('calendarStore')
 const medicalStore = createNamespacedHelpers('medicalStore')
 const userStore = createNamespacedHelpers('userStore')
+const petStore = createNamespacedHelpers('petStore')
 
 export default {
     data(){
@@ -52,27 +61,32 @@ export default {
                 ID: '',
                 PW: '',
                 Name: '',
-            }
+            },
+            pets: [],
         }
     },
     methods:{
-        ...userStore.mapMutations(['setUser', 'setPets']),
         ...userStore.mapActions(['login', 'register']),
+        ...userStore.mapGetters(['isLogin']),
         ...calendarStore.mapActions(['getCalendar']),
         ...medicalStore.mapActions(['getMedical']),
+        ...petStore.mapActions(['getPets']),
         newUser(){
             this.register(this.Register)
             this.Register.ID = ''
             this.Register.PW = ''
             this.Register.Name = ''
         },
-        setUser(){
+        async setUser(){
             // 로그인
-            this.login(this.Login)
+            const ID = await this.login(this.Login)
             this.Login.ID = ''
             this.Login.PW = ''
 
-            if(this.userID){    // 로그인 성공시
+            if(this.isLogin()){    // 로그인 성공시
+                // 펫정보 불러오기
+                this.getPets({ID: ID})
+
                 // 캘린더정보 불러오기
                 this.getCalendar(this.userID)
 
@@ -85,7 +99,7 @@ export default {
         
     },
     computed: {
-        ...userStore.mapState(['userName', 'userID', 'Pets']),
+        ...userStore.mapState(['userName', 'userID', 'pets']),
         ...calendarStore.mapState([]),
         ...medicalStore.mapState([])
     }

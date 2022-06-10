@@ -12,7 +12,8 @@ var connection = mysql.createConnection({
 
 router.get('/data', (req, res)=>{
     const query = 'select * from Pet where MasterID=?'
-    const master = req.body.ID
+    console.log(req.body)
+    const master = req.body
     connection.query(query, master, (err, result)=>{
         if(err) throw err;
 

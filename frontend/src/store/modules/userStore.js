@@ -9,7 +9,9 @@ export default {
         pets: []
     },
     getters: {
-
+        isLogin(state){
+            return state.userID ? true : false
+        }
     },
     mutations: {
         setUser(state, payload){
@@ -28,8 +30,9 @@ export default {
         }
     },
     actions: {
-        login({commit}, payload){
-            axios({
+        async login({commit}, payload){
+            console.log('로그인 함수')
+            await axios({
                 url: 'user/login',
                 method: 'post',
                 data: {
@@ -44,11 +47,9 @@ export default {
                         Name: res.data[0].UserName
                     }
                     commit('setUser', user)
+                    return user.ID
                 }
             })
-
-            // calendarStore 디스패치(calendar 데이터 불러오기)
-            // medicalStore 디스패치(medical 데이터 불러오기)
         },
         register(context, payload){
             axios({
@@ -66,15 +67,15 @@ export default {
                 console.error(err)
             })
         },
-        getPet({state, commit}){
+        getPets(context){
+            console.log('펫정보 불러오기 함수')
             axios({
                 url: '/pet/data',
                 method: 'get',
-                data: state.userID
+                data: context.state.userID
             }).then(res=>{
-                if(res.data){
-                    commit('setPets', res.data)
-                }
+                console.log(res)
+                context.commit('setPets', res.data)
             })
         },
         registerPet(context, payload){
