@@ -34,9 +34,33 @@
             <hr>
             <b-row v-for="item in pets" :key="item.MasterID">
                 <b-col>
-                    이름: {{item.PetName}}<br>
-                    성별: {{item.Sex}}<br>
-                    종류: {{item.PetType}}
+                    불러온 펫 데이터
+                    <b-card>
+                        이름: {{item.PetName}}<br>
+                        성별: {{item.Sex}}<br>
+                        종류: {{item.PetType}}
+                    </b-card>
+                </b-col>
+                <b-col>
+                    불러온 캘린더 데이터
+                    <b-card v-for="item in calendarData" :key="item.CalendarNo">
+                        내용 : {{item.Content}}<br>
+                        ID : {{item.MasterID}}<br>
+                        펫 : {{item.PetName}}<br>
+                        작성날짜 : {{item.WriteDate}}
+                    </b-card>
+                </b-col>
+                <b-col>
+                    불러온 의료 데이터
+                    <b-card v-for="item in medicalData" :key="item.MedicalNo">
+                        내원이유 : {{item.Cause}}<br>
+                        증상 : {{item.Content}}<br>
+                        비용 : {{item.Cost}}<br>
+                        ID : {{item.MasterID}}<br>
+                        내원날짜 : {{item.MedicalDate}}<br>
+                        펫 : {{item.PetName}}<br>
+                        처방 : {{item.Prescription}}
+                    </b-card>
                 </b-col>
             </b-row>
         </b-container>
@@ -65,11 +89,15 @@ export default {
         }
     },
     methods:{
-        ...userStore.mapActions(['login', 'register']),
+        // Getters
         ...userStore.mapGetters(['isLogin']),
+
+        // Actions
+        ...userStore.mapActions(['login', 'register']),
         ...calendarStore.mapActions(['getCalendar']),
         ...medicalStore.mapActions(['getMedical']),
         ...petStore.mapActions(['getPets']),
+
         newUser(){
             this.register(this.Register)
             this.Register.ID = ''
@@ -87,10 +115,10 @@ export default {
                 this.getPets(this.userID)
 
                 // 캘린더정보 불러오기
-                //this.getCalendar(this.userID)
+                this.getCalendar(this.userID)
 
                 // 의료정보 불러오기
-                //this.getMedical(this.userID)
+                this.getMedical(this.userID)
             }
         },
     },
@@ -98,10 +126,11 @@ export default {
         
     },
     computed: {
+        // States
         ...userStore.mapState(['userName', 'userID']),
         ...petStore.mapState(['pets']),
-        ...calendarStore.mapState([]),
-        ...medicalStore.mapState([])
+        ...calendarStore.mapState(['calendarData']),
+        ...medicalStore.mapState(['medicalData'])
     }
 }
 </script>

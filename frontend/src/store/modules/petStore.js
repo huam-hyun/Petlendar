@@ -10,11 +10,9 @@ export default{
     },
     mutations: {
         setPets(state, payload){
-            console.log('setPets 시작')
             for(let i = 0; i < payload.length; i++){
                 state.pets.push(payload[i])
             }
-            console.log('setPets 끝')
         },
         setClear(state){
             state.pets = []
@@ -22,15 +20,16 @@ export default{
     },
     actions: {
         async getPets({commit}, payload){
-            console.log('getPets 시작')
             console.log(payload)
-            await axios.get('/pet/data', {params: {id: payload}}).then(res=>{
+            await axios({
+                url: '/pet/data',
+                params: {id: payload}
+            }).then(res=>{
                 console.log(res.data)
                 if(res.data){
                     commit('setPets', res.data)
                 }
             })
-            console.log('getPets 끝')
         },
         registerPet(context, payload){
             const petData = Object.values(payload)

@@ -14,12 +14,13 @@ export default {
         }
     },
     actions: {
-        getMedical({commit}, ID){
-            axios({
+        async getMedical({commit}, id){
+            await axios({
                 url: '/medical/data',
                 method: 'get',
-                data: ID
+                params: id
             }).then(res=>{
+                console.log(res.data)
                 if(res.data){
                     commit('setMedical', res.data)
                 }

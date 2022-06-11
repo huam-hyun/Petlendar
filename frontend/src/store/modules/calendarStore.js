@@ -18,12 +18,13 @@ export default {
         },
     },
     actions: {
-        getCalendar({commit}, ID){
-            axios({
+        async getCalendar({commit}, id){
+            await axios({
                 url: '/calendar/data',
                 method: 'get',
-                data: ID
+                params: id
             }).then(res=>{
+                console.log(res.data)
                 if(res.data){
                     commit('setCalendar', res.data)
                 }

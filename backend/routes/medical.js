@@ -13,10 +13,10 @@ var connection = mysql.createConnection({
   database: 'Petlendar'
 });
 
-router.post('/list', function(req, res){
-    // const ID = req.body.ID;
-    const sql = `select * from MedicalData order by MedicalDate`;
-    const query = connection.query(sql, function(err, result){
+router.get('/data', function(req, res){
+    const id = req.query[0];
+    const sql = `select * from MedicalData where MasterID=? order by MedicalDate`;
+    const query = connection.query(sql, [id], function(err, result){
       if(err){
         console.error(err);
         throw err;

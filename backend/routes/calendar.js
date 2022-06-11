@@ -13,9 +13,10 @@ var connection = mysql.createConnection({
 });
 
 router.get('/data', function(req, res){
-    const sql = 'select * from CalendarData';
+    const sql = 'select * from CalendarData where MasterID=?';
+    const id = req.query[0]
 
-    connection.query(sql, (err, result)=>{
+    connection.query(sql, [id], (err, result)=>{
         if(err) throw err;
 
         res.status(200).send(result);
