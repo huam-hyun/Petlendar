@@ -34,8 +34,8 @@
             <hr>
             <b-row v-for="item in pets" :key="item.MasterID">
                 <b-col>
-                    이름: {{item.PetName}}
-                    성별: {{item.Sex}}
+                    이름: {{item.PetName}}<br>
+                    성별: {{item.Sex}}<br>
                     종류: {{item.PetType}}
                 </b-col>
             </b-row>
@@ -62,7 +62,6 @@ export default {
                 PW: '',
                 Name: '',
             },
-            pets: [],
         }
     },
     methods:{
@@ -79,19 +78,19 @@ export default {
         },
         async setUser(){
             // 로그인
-            const ID = await this.login(this.Login)
+            await this.login(this.Login)
             this.Login.ID = ''
             this.Login.PW = ''
 
             if(this.isLogin()){    // 로그인 성공시
                 // 펫정보 불러오기
-                this.getPets({ID: ID})
+                this.getPets(this.userID)
 
                 // 캘린더정보 불러오기
-                this.getCalendar(this.userID)
+                //this.getCalendar(this.userID)
 
                 // 의료정보 불러오기
-                this.getMedical(this.userID)
+                //this.getMedical(this.userID)
             }
         },
     },
@@ -99,7 +98,8 @@ export default {
         
     },
     computed: {
-        ...userStore.mapState(['userName', 'userID', 'pets']),
+        ...userStore.mapState(['userName', 'userID']),
+        ...petStore.mapState(['pets']),
         ...calendarStore.mapState([]),
         ...medicalStore.mapState([])
     }

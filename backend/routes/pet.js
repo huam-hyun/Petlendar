@@ -10,11 +10,10 @@ var connection = mysql.createConnection({
     database: 'Petlendar'
 });
 
-router.get('/data', (req, res)=>{
+router.get('/data?', (req, res)=>{
     const query = 'select * from Pet where MasterID=?'
-    console.log(req.body)
-    const master = req.body
-    connection.query(query, master, (err, result)=>{
+    const master = req.query.id
+    connection.query(query, [master], (err, result)=>{
         if(err) throw err;
 
         res.status(200).send(result)

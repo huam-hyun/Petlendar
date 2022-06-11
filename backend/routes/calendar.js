@@ -35,7 +35,7 @@ router.post('/data', function(req, res){
     })
 });
 
-router.delete('/data', function(req, res){
+router.delete('/data', function(req, res){ 
     const sql = 'delete from CalendarData where CalendarNo in (?)';
     let values = [...req.body];
     console.log(values);
