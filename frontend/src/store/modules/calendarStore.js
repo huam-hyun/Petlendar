@@ -4,12 +4,10 @@ export default {
     namespaced: true,
     state: {
         calendarData: [],
-
     },
     getters: {
-        selectedData(state, PetID){
-            if(!PetID) return state.calendarData
-            return state.calendarData.filter(e => e.PetID === PetID)
+        selectedData: (state) => (date) =>{
+            return state.calendarData.filter(e => e.WriteDate === date)
         }
     },
     mutations: {
@@ -30,29 +28,35 @@ export default {
                 }
             })
         },
-        saveData({commit}, payload){
+        async saveData({commit}, payload){
             console.log(payload)
             const [addData, deleteData, ID] = payload
+            console.log('addData')
+            console.log(addData)
+            console.log('deleteData')
+            console.log(deleteData)
             // 추가된 목록이 있다면 실행
-            if(addData){
-                let data = []
+            if(addData.length){
+                const data = {
+                    add: [],
+                    id: ID
+                }
                 for(let i = 0; i < addData.length; i++){
                     delete addData[i].tempNo;
-                    data.push(Object.values(addData[i]))
+                    data.add.push(Object.values(addData[i]))
                 }
-                data.push(ID)
 
-                axios({
+                await axios({
                     url: '/calendar/data',
                     method: 'post',
                     data: data
                 }).then(res=>{
                     console.log(res)
-                    commit('')
+                    commit('setCalendar', res.data)
                 })
             }
             // 삭제한 목록이 있다면 실행
-            if(deleteData){
+            if(deleteData.length){
                 axios({
                     url: '/calendar/data',
                     method: 'delete',

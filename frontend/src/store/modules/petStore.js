@@ -31,9 +31,9 @@ export default{
                 }
             })
         },
-        registerPet(context, payload){
+        async registerPet(context, payload){
             const petData = Object.values(payload)
-            axios({
+            await axios({
                 url: '/pet/data',
                 method: 'post',
                 data: petData

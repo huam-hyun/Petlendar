@@ -9,7 +9,8 @@ var connection = mysql.createConnection({
   port: 3306,
   user: 'root',
   password: '201635967',
-  database: 'Petlendar'
+  database: 'Petlendar',
+  multipleStatements: true
 });
 
 router.get('/data', function(req, res){
@@ -24,15 +25,18 @@ router.get('/data', function(req, res){
 });
 
 router.post('/data', function(req, res){
-    const sql1 = 'insert into CalendarData(WriteDate, Content, MasterID, PetName) values ?;'
-    const sql2 = 'select * from User where userID=?;'
-    let values = [...req.body];
-    console.log(values);
+    console.log(req.body)
+    const insert_sql = 'insert into CalendarData(WriteDate, Content, MasterID, PetName) values ?;'
+    const select_sql = `select * from CalendarData where MasterID=\'${req.body.id}\';`
+    const addData = req.body.add
 
-    connection.query(sql, [values], (err, result)=>{
+    connection.query(insert_sql + select_sql, [addData], (err, result)=>{
         if(err) throw err;
 
-        res.status(200).send(result);
+        console.log('result1' + result[0]);
+        console.log('result2' + result[1]);
+
+        res.status(200).send(result[1])
     })
 });
 

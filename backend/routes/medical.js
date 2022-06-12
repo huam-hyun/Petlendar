@@ -16,7 +16,7 @@ var connection = mysql.createConnection({
 router.get('/data', function(req, res){
     const id = req.query[0];
     const sql = `select * from MedicalData where MasterID=? order by MedicalDate`;
-    const query = connection.query(sql, [id], function(err, result){
+    connection.query(sql, [id], function(err, result){
       if(err){
         console.error(err);
         throw err;

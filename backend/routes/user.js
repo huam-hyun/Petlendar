@@ -25,6 +25,8 @@ router.post('/data', function(req, res){
         }
         res.status(200).send('success');
     });
+
+    connection.end()
 });
 
 router.post('/login', function(req, res){

@@ -6,7 +6,6 @@ export default {
     state: {
         userName: '',
         userID: '',
-        pets: []
     },
     getters: {
         isLogin(state){
@@ -18,20 +17,14 @@ export default {
             state.userName = payload.Name
             state.userID = payload.ID
         },
-        setPets(state, payload){
-            for(let i = 0; i < payload.length; i++){
-                state.pets.push(payload[i])
-            }
-        },
         setClear(state){
             state.userName = ''
             state.userID = ''
-            state.pets = []
         }
     },
     actions: {
         async login({commit}, payload){
-            console.log('login 시작')
+            console.log('로그인 함수')
             await axios({
                 url: 'user/login',
                 method: 'post',
@@ -49,7 +42,6 @@ export default {
                     commit('setUser', user)
                 }
             })
-            console.log('login 끝')
         },
         register(context, payload){
             axios({
