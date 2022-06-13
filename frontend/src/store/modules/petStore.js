@@ -20,7 +20,7 @@ export default{
     },
     actions: {
         async getPets({commit}, payload){
-            console.log(payload)
+            console.log('getPets함수')
             await axios({
                 url: '/pet/data',
                 params: {id: payload}

@@ -9,14 +9,18 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import router from './router/index.js'
 import axios from 'axios'
 import store from './store/index.js'
+import VCalendar from 'v-calendar'
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
+// v-calendar
+Vue.use(VCalendar)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
+
 
 new Vue({
   router,
