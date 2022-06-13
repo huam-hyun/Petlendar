@@ -26,17 +26,13 @@ router.get('/data', function(req, res){
 
 router.post('/data', function(req, res){
     console.log(req.body)
-    const insert_sql = 'insert into CalendarData(WriteDate, Content, MasterID, PetName) values ?;'
-    const select_sql = `select * from CalendarData where MasterID=\'${req.body.id}\';`
-    const addData = req.body.add
+    const sql = 'insert into CalendarData(WriteDate, Content, MasterID, PetName) values ?;'
+    const addData = req.body
 
-    connection.query(insert_sql + select_sql, [addData], (err, result)=>{
+    connection.query(sql, [addData], (err, result)=>{
         if(err) throw err;
 
-        console.log('result1' + result[0]);
-        console.log('result2' + result[1]);
-
-        res.status(200).send(result[1])
+        res.status(200).send(result)
     })
 });
 

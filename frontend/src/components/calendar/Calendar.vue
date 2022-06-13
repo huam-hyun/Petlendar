@@ -15,9 +15,12 @@
                 </b-col>
                 <b-col cols="5">
                     <b-card>
+                        <!-- 날짜 -->
                         <b-card-header>
                             {{date}}
                         </b-card-header>
+
+                        <!-- 새로 추가할 메모 입력하는 곳 -->
                         <b-card>
                             <b-row align-h="between" align-v="center">
                                 <b-col cols="11">
@@ -30,7 +33,9 @@
                                 </b-col>
                             </b-row>
                         </b-card>
-                        <span v-if="selectedData.length">
+
+                        <!-- 선택한 날짜에 메모가 있으면 나타남 -->
+                        <span v-if="selectedData(date).length">
                             <b-card v-for="memo in selectedData(date)" :key="memo.CalendarNo">
                                 <b-row>
                                     <b-col>
@@ -42,9 +47,10 @@
                                 </b-row>
                             </b-card>
                         </span>
-                        <span v-if="!selectedData.length">
-                            <b-row v-if="selectedForAddData.length">
-                                <b-row v-for="memo in selectedForAddData" :key="memo.tempNo">
+
+                        <span v-if="getAddData(date).length">
+                            <b-card v-for="memo in getAddData(date)" :key="memo.tempNo">
+                                <b-row>
                                     <b-col>
                                         {{memo.Content}}
                                     </b-col>
@@ -52,10 +58,8 @@
                                         <span @click="deleteData(memo)">X</span>
                                     </b-col>
                                 </b-row>
-                            </b-row>
-                            <b-row v-if="!selectedForAddData.length">
-                                기록 없음
-                            </b-row>
+                            </b-card>
+
                         </span>
                     </b-card>
                 </b-col>
@@ -64,13 +68,6 @@
         </b-container>
         <b-button @click="List()">리스트보기</b-button>
         <b-button @click="save()">저장</b-button>
-        <hr>
-        {{oldDatas}}
-        <hr>
-        {{attributes[0].dates}}
-        <hr>
-        {{deleteDatas}}
-        
     </div>
 </template>
 
@@ -93,92 +90,62 @@ export default {
         return{
             date: today,
             content: '',
-            forAddData: [],
-            forDeleteData: [],
-            num: 0,
+            num: 1,
             selectedPet: '',
             modelConfig: {
                 type: 'string',
                 mask: 'YYYY-MM-DD'
             },
-            attributes: [
-                // 메모가 있는 날을 표시
-                {
-                    dot: 'green',
-                    dates: []
-                },
-                // 새로 추가한 메모가 있는 날
-                {
-                    dot: 'blue',
-                    dates: []
-                },
-                // 삭제될 메모가 있는 날
-                {
-                    dot: 'red',
-                    dates: []
-                }
-            ],
-            a: []
         }
     },
     methods: {
         addData(){
-            const newData = {
-                tempNo: this.num,
-                WriteDate: this.date,
-                Content: this.content,
-                MasterID: this.getID,
-                PetName: this.selectedPet,
+            const payload = {
+                method: 'plus',
+                data: {
+                    tempNo: this.num,
+                    WriteDate: this.date,
+                    Content: this.content,
+                    MasterID: this.getID,
+                    PetName: this.selectedPet
+                }
             }
-            this.forAddData.push(newData);
 
-            // 데이터 추가시 변경점이 있다고 표시해줌
+            this.changeAddData(payload)
+            
             this.num++;
             this.content = '';
         },
         deleteData(item){
-            if(item.CalendarNo){
-                // DB에 등록돼 있는 데이터는 CalendarNo가 있으니 삭제 요청을 위한 배열에 CalendarNo를 추가
-                this.forDeleteData.push(item);
-                console.log(this.forDeleteData);
-                this.calendarData.findIndex(e => e.CalendarNo === item.CalendarNo);
-
-            }else{
-                // 사용자가 입력해서 DB에 저장은 안됐지만 삭제할 데이터들
-                const index = this.forAddData.findIndex(e => e.tempNo === item.tempNo);
-                this.forAddData.splice(index, 1);
-
-                // deleteDots
+            console.log(item)
+            if(item.tempNo){
+                // tempNo가 있다면 아직 DB에 반영안된 자료이다
+                const payload = {
+                    method: 'minus',
+                    data: item
+                }
+                this.changeAddData(payload)
+            }else if(!item.tempNo){
+                // 그 이외엔 DB에 있는 자료를 삭제해야 한다
+                this.changeDeleteData(item)
             }
         },
         save(){
-            const addData = this.forAddData ? this.forAddData : 0
-            const deleteData = this.forDeleteData ? this.forDeleteData : 0
-            const payload = [ addData, deleteData, this.getID ]
-
-            if(addData === 0 && deleteData === 0){
-                alert('수정된 부분이 없습니다')
-                return
-            }
+            const payload = this.getID
 
             this.saveData(payload)
-
-            this.forAddData = []
-            this.forDeleteData = []
         },
         List(){
             this.$router.push({name: 'CalendarList'})
         },
         ...calendarStore.mapActions(['saveData']),
+        ...calendarStore.mapMutations(['changeAddData', 'changeDeleteData'])
     },
     computed: {
         ...userStore.mapGetters(['getID']),
-        ...calendarStore.mapState(['calendarData']),
-        ...calendarStore.mapGetters(['selectedData']),
+        ...calendarStore.mapGetters(['selectedData', 'getAddData', 'getDeleteData']),
+        ...calendarStore.mapState(['attributes']),
         ...petStore.mapState(['pets']),
-        selectedForAddData(){
-            return this.forAddData.filter(e => e.WriteDate === this.date)
-        },
     },
 }
 </script>
