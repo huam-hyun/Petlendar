@@ -6,7 +6,9 @@ export default{
         pets: []
     },
     getters: {
-        
+        getPets(state){
+            return state.pets
+        }
     },
     mutations: {
         setPets(state, payload){

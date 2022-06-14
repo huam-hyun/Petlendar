@@ -6,12 +6,14 @@
                 <b-col md="6" offset-md="3">
                     <b-card>
                     <label for="datepicker">날짜</label>
-                    <v-date-picker v-model="date" :masks="masks" id="datepicker">
+                    <v-date-picker trim-weeks title-position="left" v-model="date" :model-config="modelConfig" id="datepicker">
                         <template v-slot="{ inputValue, inputEvents }">
                             <b-form-input
-                                placeholder="날짜를 입력하세요"
+                                placeholder="날짜를 선택하세요"
                                 :value="inputValue"
                                 v-on="inputEvents"
+                                required
+                                readonly
                             />
                         </template>
                     </v-date-picker>
@@ -21,7 +23,6 @@
                         id="cause"
                         v-model="MedicalData.Cause"
                         placeholder="구토, 기침 등"
-                        required
                     ></b-form-input>
                     <br>
                     <label for="text">내용</label>
@@ -55,25 +56,26 @@
 </template>
 
 <script>
-import {createdNamespacedHelpers} from 'vuex'
-const userStore = createdNamespacedHelpers('userStore')
-const medicalStore = createdNamespacedHelpers('medicalStore')
-// const petStore = createdNamespacedHelpers('petStore')
+import {createNamespacedHelpers} from 'vuex'
+const userStore = createNamespacedHelpers('userStore')
+const petStore = createNamespacedHelpers('petStore')
+const medicalStore = createNamespacedHelpers('medicalStore')
 
 export default {
     data(){
         return{
             MedicalData: {
-                MedicalDate: this.getDate,
+                MedicalDate: this.date,
                 Cause: '',
                 Content: '',
                 Prescription: '',
                 Cost: 0,
-                PetID: 2,       // PetID와 MasterID는 개인정보에서 가져오기
+                PetName: [],
                 MasterID: this.getID
             },
-            masks:{
-                input: 'YYYY-MM-DD'
+            modelConfig:{
+                type: 'string',
+                mask: 'YYYY-MM-DD'
             },
             date: ''
         }
@@ -89,14 +91,12 @@ export default {
     },
     computed:{
         ...userStore.mapGetters(['getID']),
-        ...medicalStore.mapGetters(['getMedical']),
-        getDate(){
-            const date = this.date
-            const year = date.getFullYear().toString()
-            const month = (date.getMonth() + 1) < 10 ? '0' + (date.getMontH() + 1) : date.getMontH() + 1
-            const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
-
-            return `${year}-${month}-${day}`
+        ...medicalStore.mapGetters(['getMedical', 'getData']),
+        ...petStore.mapGetters(['getPets']),
+    },
+    created(){
+        if(this.$route.params.no){
+            this.MedicalData = this.getData(this.$route.params.no)
         }
     }
 }
