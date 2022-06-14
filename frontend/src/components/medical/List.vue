@@ -12,7 +12,7 @@
                     비용
                 </b-col>
             </b-row>
-            <b-row align-h="center" v-for="item in getMedicalData" :key="item.MedicalNoo" @click="onClick(item)" class="listContent">
+            <b-row align-h="center" v-for="item in getData" :key="item.MedicalNo" class="listContent">
                 <b-col cols="2">
                     {{item.MedicalDate}}
                 </b-col>
@@ -24,7 +24,7 @@
                 </b-col>
             </b-row>
         </b-container>
-        <b-button @click="goWrite">작성하기</b-button>
+        <b-button to="/Medical/Write">작성하기</b-button>
     </div>
 </template>
 
@@ -41,8 +41,8 @@ export default {
     methods:{
         
     },
-    created(){
-        
+    computed:{
+        ...medicalStore.mapGetters(['getData'])
     }
 }
 </script>

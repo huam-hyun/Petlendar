@@ -6,7 +6,9 @@ export default {
         medicalData: []
     },
     getters: {
-
+        getData(state){
+            return state.medicalData
+        }
     },
     mutations: {
         setMedical(state, payload){
@@ -24,6 +26,24 @@ export default {
                 if(res.data){
                     commit('setMedical', res.data)
                 }
+            })
+        },
+        async postMedical(context, payload){
+            await axios({
+                url: '/medical/data',
+                method: 'post',
+                data: payload
+            }).then(res =>{
+                console.log(res.data)
+            })
+        },
+        async updateMedical(context, payload){
+            await axios({
+                url: '/medical/data',
+                method:'update',
+                data: payload
+            }).then(res=>{
+                console.log(res)
             })
         }
     }

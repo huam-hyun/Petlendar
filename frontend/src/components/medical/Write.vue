@@ -6,7 +6,15 @@
                 <b-col md="6" offset-md="3">
                     <b-card>
                     <label for="datepicker">날짜</label>
-                    <b-form-datepicker v-model="MedicalData.MedicalDate" id="datepicker" placeholder="날짜를 선택하세요"></b-form-datepicker>
+                    <v-date-picker v-model="date" :masks="masks" id="datepicker">
+                        <template v-slot="{ inputValue, inputEvents }">
+                            <b-form-input
+                                placeholder="날짜를 입력하세요"
+                                :value="inputValue"
+                                v-on="inputEvents"
+                            />
+                        </template>
+                    </v-date-picker>
                     <br>
                     <label for="cause">내원이유</label>
                     <b-form-input
@@ -47,19 +55,27 @@
 </template>
 
 <script>
+import {createdNamespacedHelpers} from 'vuex'
+const userStore = createdNamespacedHelpers('userStore')
+const medicalStore = createdNamespacedHelpers('medicalStore')
+// const petStore = createdNamespacedHelpers('petStore')
+
 export default {
     data(){
         return{
             MedicalData: {
-                MedicalNo: undefined,
-                MedicalDate: '',
+                MedicalDate: this.getDate,
                 Cause: '',
                 Content: '',
                 Prescription: '',
-                Cost: undefined,
+                Cost: 0,
                 PetID: 2,       // PetID와 MasterID는 개인정보에서 가져오기
-                MasterID: 'test'
-            }
+                MasterID: this.getID
+            },
+            masks:{
+                input: 'YYYY-MM-DD'
+            },
+            date: ''
         }
     },
     methods: {
@@ -68,30 +84,19 @@ export default {
         },
         onSubmit(event){
             event.preventDefault()
-            if(this.$route.params.MedicalData){
-                this.$http({
-                    url: '/medical/update',
-                    method: 'post',
-                    data: this.MedicalData
-                }).then((res)=>{
-                    console.log(res);
-                    this.$router.push({name:'MedicalList'});
-                })
-            }else{
-                this.$http({
-                    url: '/medical/write',
-                    method: 'post',
-                    data: this.MedicalData
-                }).then((res)=>{
-                    console.log(res);
-                    this.$router.push({name:'MedicalList'})
-                });
-            }
+            
         }
     },
-    created(){
-        if(this.$route.params.MedicalData){
-            this.MedicalData = this.$route.params.MedicalData;
+    computed:{
+        ...userStore.mapGetters(['getID']),
+        ...medicalStore.mapGetters(['getMedical']),
+        getDate(){
+            const date = this.date
+            const year = date.getFullYear().toString()
+            const month = (date.getMonth() + 1) < 10 ? '0' + (date.getMontH() + 1) : date.getMontH() + 1
+            const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+
+            return `${year}-${month}-${day}`
         }
     }
 }
