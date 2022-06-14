@@ -25,6 +25,11 @@ export default {
         selectedData: (state) => (date) =>{
             return state.calendarData.filter(e => e.WriteDate === date)
         },
+        selectedMonth: (state) => (year, month) =>{
+            month = month < 10 ? '0' + month : month
+            const date = `${year}-${month}`
+            return state.calendarData.filter(e => e.WriteDate.startsWith(date))
+        },
         getAddData: (state) => (date) =>{
             return state.addData.filter(e => e.WriteDate === date)
         },

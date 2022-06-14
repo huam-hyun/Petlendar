@@ -33,7 +33,7 @@
                             </b-col>
                             <b-col cols="1"></b-col>        <!-- 우 여백 -->
                         </b-row>
-                        <b-row v-for="item in selectedData" :key="item.no" align-h="around">
+                        <b-row v-for="item in selectedMonth(year, month)" :key="item.CalendarNo" align-h="around">
                             <b-col cols="1"></b-col>        <!-- 좌 여백 -->
                             <b-col cols="2">
                                 {{ item.WriteDate }}
@@ -41,29 +41,37 @@
                             <b-col cols="6">
                                 {{ item.Content }}
                             </b-col>
-                            <b-col cols="2">
-                                펫 이름 넣을곳
+                            <b-col cols="2" v-if="!item.petName">
+                                모두
+                            </b-col>
+                            <b-col cols="2" v-if="item.petName">
+                                {{ item.petName }}
                             </b-col>
                             <b-col cols="1"></b-col>        <!-- 우 여백 -->
                         </b-row>
                     </b-container>
                 </b-col>                
             </b-row>
+            <b-button to="/Calendar/View">캘린더 보기</b-button>
         </b-container>
     </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex';
+// const userStore = createNamespacedHelpers('userStore')
+const calendarStore = createNamespacedHelpers('calendarStore')
+// const petStore = createNamespacedHelpers('petStore')
+
 export default {
     data(){
         let today = new Date();
         let month = today.getMonth() + 1
-        let year = today.getFullYear()
+        let year = today.getFullYear().toString()
 
         return{
-            month: month,
             year: year,
-            CalendarData: [],
+            month: month
         }
     },
     methods: {
@@ -91,15 +99,16 @@ export default {
                 nowDate = `${this.year}-${this.month}`
             }
 
-            const length = this.CalendarData.length;
+            const length = this.calendarData.length;
             for(let i = 0; i < length ; i++){
-                if(this.CalendarData[i].WriteDate.startsWith(nowDate)){
+                if(this.calendarData[i].WriteDate.startsWith(nowDate)){
                     temp.push(this.CalendarData[i])
                 }
             }
 
             return temp;
-        }
+        },
+        ...calendarStore.mapGetters(['selectedMonth'])
     },
     created(){
         this.$http({

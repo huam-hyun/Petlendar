@@ -23,7 +23,7 @@ export default {
         setClear(state){
             state.userName = ''
             state.userID = ''
-        }
+        },
     },
     actions: {
         async login({commit}, payload){

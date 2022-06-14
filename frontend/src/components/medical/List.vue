@@ -12,7 +12,7 @@
                     비용
                 </b-col>
             </b-row>
-            <b-row align-h="center" v-for="item in List" :key="item.no" @click="onClick(item)" class="listContent">
+            <b-row align-h="center" v-for="item in getMedicalData" :key="item.MedicalNoo" @click="onClick(item)" class="listContent">
                 <b-col cols="2">
                     {{item.MedicalDate}}
                 </b-col>
@@ -29,27 +29,20 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex'
+const medicalStore = createNamespacedHelpers('medicalStore')
+
 export default {
     data(){
         return{
-            List: []
+
         }
     },
     methods:{
-        onClick(item){
-            this.$router.push({name:'MedicalDetail', params:{MedicalData: item}})
-        },
-        goWrite(){
-            this.$router.push({name:'MedicalWrite'})
-        }
+        
     },
     created(){
-        this.$http.post('/medical/list').then((res) =>{
-            console.log(res);
-            if(res.data){
-                this.List = res.data;
-            }
-        })
+        
     }
 }
 </script>
