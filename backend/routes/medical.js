@@ -1,4 +1,5 @@
 // Medical 기능 api
+// api 수정해야함
 
 var express = require('express');
 const req = require('express/lib/request');
@@ -45,15 +46,15 @@ router.post('/write', function(req, res){
     })
 });
 
-router.post('/update', function(req, res){
-    const sql = `update MedicalData set MedicalDate=?, Cause=?, Content=?, Prescription=?, Cost=? where MedicalNo=${req.body.MedicalNo}`;
-    const MedicalDate = req.body.MedicalDate;
-    const Cause = req.body.Cause;
-    const Content = req.body.Content;
-    const Prescription = req.body.Prescription;
-    const Cost = req.body.Cost;
+router.put('/data', function(req, res){
+    const sql = `update MedicalData set ? where MedicalNo=${req.body.MedicalNo}`;
+    // const MedicalDate = req.body.MedicalDate;
+    // const Cause = req.body.Cause;
+    // const Content = req.body.Content;
+    // const Prescription = req.body.Prescription;
+    // const Cost = req.body.Cost;
 
-    connection.query(sql, [MedicalDate, Cause, Content, Prescription, Cost], (err, result)=>{
+    connection.query(sql, [req.body], (err, result)=>{
         if(err) throw err;
         res.status(200).send('수정완료');
     })

@@ -93,15 +93,15 @@
                                                 :readonly="readonly"
                                             />
                                         </b-input-group>
-                                        <b-button @click="writeOn()" v-if="readonly">수정하기</b-button>
-                                        <b-button @click="writeOn()" v-else>수정완료</b-button>
+                                        <br/>
+                                        <b-button @click="writeOn(item)" v-if="readonly" variant="outline-primary">수정하기</b-button>
+                                        <b-button @click="updateData(item)" variant="outline-primary" v-else-if="!readonly">수정완료</b-button>
                                     </b-card>
                                 </b-form>
                             </b-collapse>
                         </b-col>
                     </b-row>
                 </b-card>
-                
             </b-row>
         </b-container>
         <b-button to="/Medical/Write">작성하기</b-button>
@@ -109,6 +109,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { createNamespacedHelpers } from 'vuex'
 const medicalStore = createNamespacedHelpers('medicalStore')
 
@@ -119,12 +120,24 @@ export default {
             modelConfig: {
                 type: 'string',
                 mask: 'YYYY-MM-DD'
-            }
+            },
+            data: {}
         }
     },
     methods:{
-        writeOn(){
+        writeOn(item){
+            this.data = item
             this.readonly = !this.readonly
+        },
+        updateData(item){
+            axios({
+                url: '/medical/data',
+                method: 'put',
+                data: item
+            })
+            this.readonly = !this.readonly
+        },
+        reset(){
         }
     },
     computed:{
