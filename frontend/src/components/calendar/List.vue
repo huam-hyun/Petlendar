@@ -89,34 +89,10 @@ export default {
         }
     },
     computed: {
-        selectedData(){
-            let temp = []
-            let nowDate = ''
-
-            if(this.month < 10){
-                nowDate = `${this.year}-0${this.month}`
-            } else{
-                nowDate = `${this.year}-${this.month}`
-            }
-
-            const length = this.calendarData.length;
-            for(let i = 0; i < length ; i++){
-                if(this.calendarData[i].WriteDate.startsWith(nowDate)){
-                    temp.push(this.CalendarData[i])
-                }
-            }
-
-            return temp;
-        },
         ...calendarStore.mapGetters(['selectedMonth'])
     },
     created(){
-        this.$http({
-            url: '/calendar/data',
-            method: 'get'
-        }).then(res =>{
-            this.CalendarData = res.data;
-        })
+        
     }
 }
 </script>

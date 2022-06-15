@@ -7,12 +7,8 @@ export default {
     },
     getters: {
         getData(state){
-            return (no)=>{
-                if(no){
-                    return state.medicalData.find(e => e.MedicalNo === no)
-                }
-            }
-        }
+            return state.medicalData
+        },
     },
     mutations: {
         setMedical(state, payload){
