@@ -5,16 +5,37 @@
             <b-form v-on:submit="onSubmit" class="medicalForm">
                 <b-col md="6" offset-md="3">
                     <b-card>
+                    <b-form-group label="펫">
+                        <b-form-checkbox-group
+                            v-model="pets"
+                            :options="options"
+                        ></b-form-checkbox-group>
+                    </b-form-group>
+                    <br/>
+
                     <label for="datepicker">날짜</label>
-                    <v-date-picker trim-weeks title-position="left" v-model="date" :model-config="modelConfig" id="datepicker">
-                        <template v-slot="{ inputValue, inputEvents }">
-                            <b-form-input
-                                placeholder="날짜를 선택하세요"
-                                :value="inputValue"
-                                v-on="inputEvents"
-                                required
-                                readonly
-                            />
+                    <v-date-picker
+                        trim-weeks
+                        title-position="left"
+                        v-model="MedicalData.MedicalDate"
+                        :model-config="modelConfig"
+                        id="datepicker"
+                    >
+                        <template v-slot="{ inputValue, togglePopover }">
+                            <b-input-group>
+                                <template #prepend>
+                                    <b-button
+                                        variant="outline-secondary"
+                                        @click="togglePopover()"
+                                    ><img src="@/assets/calendar.png" width="20px" height="20px"></b-button>
+                                </template>
+                                <b-form-input
+                                    :value="inputValue"
+                                    placeholder="날짜를 선택하세요"
+                                    readonly
+                                    required
+                                ></b-form-input>
+                            </b-input-group>
                         </template>
                     </v-date-picker>
                     <br>
@@ -52,6 +73,7 @@
                 </b-col>
             </b-form>
         </b-container>
+        {{MedicalData}}<hr>
     </div>
 </template>
 
@@ -65,19 +87,20 @@ export default {
     data(){
         return{
             MedicalData: {
-                MedicalDate: this.date,
+                MedicalDate: '',
                 Cause: '',
                 Content: '',
                 Prescription: '',
                 Cost: 0,
-                PetName: [],
+                PetName: this.joinPetName,
                 MasterID: this.getID
             },
             modelConfig:{
                 type: 'string',
                 mask: 'YYYY-MM-DD'
             },
-            date: ''
+            options: this.getPets,
+            pets: []
         }
     },
     methods: {
@@ -86,12 +109,16 @@ export default {
         },
         onSubmit(event){
             event.preventDefault()
-            
-        }
+            this.postMedical(this.MedicalData)
+        },
+        ...medicalStore.mapActions(['postMedical'])
     },
     computed:{
+        joinPetName(){
+            return this.pets.join(' ')
+        },
         ...userStore.mapGetters(['getID']),
-        ...medicalStore.mapGetters(['getMedical', 'getData']),
+        ...medicalStore.mapGetters(['getData']),
         ...petStore.mapGetters(['getPets']),
     },
     created(){

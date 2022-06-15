@@ -27,8 +27,8 @@
                         <b-col cols="2">
                             {{item.PetName}}
                         </b-col>
-                        <b-col v-b-toggle="'medical-collapse-'+item.MedicalNo" cols="auto">
-                            ▼
+                        <b-col cols="auto">
+                            <b-button v-b-toggle="'medical-collapse-'+item.MedicalNo" variant="light">▼</b-button>
                         </b-col>
                     </b-row>
                     <b-row align-h="center">
@@ -138,6 +138,7 @@ export default {
             this.readonly = !this.readonly
         },
         reset(){
+
         }
     },
     computed:{

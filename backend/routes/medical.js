@@ -26,17 +26,8 @@ router.get('/data', function(req, res){
     });
 });
 
-router.post('/detail', function(req, res){
-    let sql = 'select * from MedicalData where MedicalNo=' + req.body.no;
-    connection.query(sql, function(err, result){
-        if(err) throw err;
-
-        res.status(200).send(result);
-    })
-})
-
-router.post('/write', function(req, res){
-    const sql = `insert into MedicalData set ?`;
+router.post('/data', function(req, res){
+    const sql = `insert into MedicalData set (?)`;
     connection.query(sql, req.body, function(err, result){
         if(err){
             res.send(err)
@@ -48,11 +39,6 @@ router.post('/write', function(req, res){
 
 router.put('/data', function(req, res){
     const sql = `update MedicalData set ? where MedicalNo=${req.body.MedicalNo}`;
-    // const MedicalDate = req.body.MedicalDate;
-    // const Cause = req.body.Cause;
-    // const Content = req.body.Content;
-    // const Prescription = req.body.Prescription;
-    // const Cost = req.body.Cost;
 
     connection.query(sql, [req.body], (err, result)=>{
         if(err) throw err;
