@@ -5,6 +5,14 @@
             <b-form v-on:submit="onSubmit" class="medicalForm">
                 <b-col md="6" offset-md="3">
                     <b-card>
+                    <b-form-group label="펫">
+                        <b-form-checkbox-group
+                            v-model="pets"
+                            :options="options"
+                        ></b-form-checkbox-group>
+                    </b-form-group>
+                    <br/>
+
                     <label for="datepicker">날짜</label>
                     <v-date-picker
                         trim-weeks
@@ -65,6 +73,7 @@
                 </b-col>
             </b-form>
         </b-container>
+        {{MedicalData}}<hr>
     </div>
 </template>
 
@@ -119,6 +128,9 @@ export default {
         ...medicalStore.mapActions(['postMedical'])
     },
     computed:{
+        joinPetName(){
+            return this.pets.join(' ')
+        },
         ...userStore.mapGetters(['getID']),
         ...medicalStore.mapGetters(['getData']),
         ...petStore.mapGetters(['getPets']),
