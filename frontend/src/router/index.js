@@ -6,6 +6,7 @@ import Main from '@/components/Main.vue'
 
 //사용자
 import Pet from '@/components/user/Pet.vue'
+import Regist from '@/components/user/Regist.vue'
 
 //캘린더
 import CalendarList from '@/components/calendar/List.vue'
@@ -56,5 +57,10 @@ export default new Router({
             name: 'Pet',
             component: Pet
         },
+        {
+            path: '/user/regist',
+            name: 'Regist',
+            component: Regist
+        }
     ]
 })

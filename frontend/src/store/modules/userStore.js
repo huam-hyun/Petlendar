@@ -46,8 +46,8 @@ export default {
                 }
             })
         },
-        register(context, payload){
-            axios({
+        async register(context, payload){
+            await axios({
                 url: '/user/data',
                 method: 'post',
                 data:{

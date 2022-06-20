@@ -8,14 +8,17 @@ export default {
         deleteData: [],
         attributes:[
             {
+                // 기존 메모가 있는 날 표시
                 dot: 'green',
                 dates: []
             },
             {
+                // 새로 추가한 메모가 있는 날 표시
                 dot: 'blue',
                 dates: []
             },
             {
+                // 기존 메모에서 삭제한 메모가 있는 날 표시
                 dot: 'red',
                 dates: []
             },
@@ -57,7 +60,7 @@ export default {
             }
         },
         changeDeleteData(state, payload){
-            // DB에 있던 자료를 삭제할 때
+            // DB에 있는 자료를 삭제할 때
             state.deleteData.push(payload)
             state.attributes[2].dates.push(payload.WriteDate)
         },

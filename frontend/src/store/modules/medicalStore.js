@@ -29,18 +29,16 @@ export default {
             })
         },
         async postMedical(context, payload){
-            await axios({
+            return await axios({
                 url: '/medical/data',
                 method: 'post',
                 data: payload
-            }).then(res =>{
-                console.log(res.data)
             })
         },
         async updateMedical(context, payload){
             await axios({
                 url: '/medical/data',
-                method:'update',
+                method:'put',
                 data: payload
             }).then(res=>{
                 console.log(res)
