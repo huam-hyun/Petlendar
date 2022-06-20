@@ -6,15 +6,28 @@
                 <b-col md="6" offset-md="3">
                     <b-card>
                     <label for="datepicker">날짜</label>
-                    <v-date-picker trim-weeks title-position="left" v-model="date" :model-config="modelConfig" id="datepicker">
-                        <template v-slot="{ inputValue, inputEvents }">
-                            <b-form-input
-                                placeholder="날짜를 선택하세요"
-                                :value="inputValue"
-                                v-on="inputEvents"
-                                required
-                                readonly
-                            />
+                    <v-date-picker
+                        trim-weeks
+                        title-position="left"
+                        v-model="date"
+                        :model-config="modelConfig"
+                        id="datepicker"
+                    >
+                        <template v-slot="{ inputValue, togglePopover }">
+                            <b-input-group>
+                                <template #prepend>
+                                    <b-button
+                                        variant="outline-secondary"
+                                        @click="togglePopover()"
+                                    ><img src="@/assets/calendar.png" width="20px" height="20px"></b-button>
+                                </template>
+                                <b-form-input
+                                    :value="inputValue"
+                                    placeholder="날짜를 선택하세요"
+                                    readonly
+                                    required
+                                ></b-form-input>
+                            </b-input-group>
                         </template>
                     </v-date-picker>
                     <br>
@@ -74,6 +87,8 @@ export default {
                 type: 'string',
                 mask: 'YYYY-MM-DD'
             },
+            options: this.getPets,
+            pets: []
         }
     },
     methods: {
@@ -82,6 +97,7 @@ export default {
         },
         async onSubmit(event){
             event.preventDefault()
+
             const payload = {
                 MedicalDate: this.date,
                 Cause: this.cause,
@@ -99,10 +115,12 @@ export default {
                 this.$router.push({name: 'MedicalList'})
             }
         },
-        ...medicalStore.mapActions(['getMedical', 'postMedical'])
+        ...medicalStore.mapActions(['getMedical', 'postMedical']),
+        ...medicalStore.mapActions(['postMedical'])
     },
     computed:{
         ...userStore.mapGetters(['getID']),
+        ...medicalStore.mapGetters(['getData']),
         ...petStore.mapGetters(['getPets']),
     },
 }

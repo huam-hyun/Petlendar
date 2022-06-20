@@ -29,7 +29,7 @@ export default {
         async login({commit}, payload){
             console.log('로그인 함수')
             await axios({
-                url: 'user/login',
+                url: '/user/login',
                 method: 'post',
                 data: {
                     ID: payload.ID,
