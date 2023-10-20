@@ -6,11 +6,9 @@ router.get('/', (req, res, next) =>{
     res.send(tests)
 })
 
-router.get('/:id', (req, res, next) =>{
-    let id = parseInt(req.params.id, 10)
-    let data = tests.filter((test) => {return test.id === id})
-
-    res.send(data);
-});
+router.post('/', (req, res, next) =>{
+    console.log(req.body)
+    res.send(tests)
+})
 
 module.exports = router;
